@@ -16,7 +16,8 @@
 *.out
 *.app
 
-
+# Video files
+*.avi
 
 # CMake 
 build
