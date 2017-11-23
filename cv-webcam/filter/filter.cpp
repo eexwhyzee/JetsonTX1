@@ -8,12 +8,20 @@ int main() {
     Mat out;
     VideoCapture input(0);
 
-    VideoWriter output(
+    VideoWriter sobelOut(
             "sobel_filter.avi",
             CV_FOURCC('X', 'V', 'I', 'D'),
             30,
             Size(input.get(CV_CAP_PROP_FRAME_WIDTH),
                  input.get(CV_CAP_PROP_FRAME_HEIGHT)));
+
+    VideoWriter cannyOut(
+            "canny_filter.avi",
+            CV_FOURCC('X', 'V', 'I', 'D'),
+            30,
+            Size(input.get(CV_CAP_PROP_FRAME_WIDTH),
+                 input.get(CV_CAP_PROP_FRAME_HEIGHT)),
+                 false);
 
     for (;;) {
         if (!input.read(feed))
@@ -21,12 +29,16 @@ int main() {
         
         Sobel(feed, out, CV_8U, 1, 1);
 
-        output.write(out);
+        sobelOut.write(out);
+
+        Canny(feed, out, 75, 125);
+        
+        cannyOut.write(out);
 
         imshow("feed", feed);
         char c = cv::waitKey(30);
-
-        if (c == ' ')
+          
+        if (c == 'q')
             break;
     }
 }
